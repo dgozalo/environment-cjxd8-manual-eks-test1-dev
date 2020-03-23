@@ -1,38 +1,86 @@
 autoUpdate:
   enabled: false
   schedule: ""
+bootConfigURL: https://github.com/cloudbees/cloudbees-jenkins-x-boot-config.git
 cluster:
-  clusterName: ""
-  environmentGitOwner: ""
+  clusterName: cjxd8-manual-eks-test1
+  devEnvApprovers:
+  - dgozalo
+  environmentGitOwner: dgozalo
   environmentGitPublic: true
-  project: ""
-  azure: {}
-  provider: gke
-  zone: ""
-gitops: true
+  gitKind: github
+  gitName: github
+  gitServer: https://github.com
+  namespace: jx
+  provider: eks
+  region: us-east-1
+  registry: 296178596335.dkr.ecr.us-east-1.amazonaws.com
 environments:
-  - key: dev
-  - key: staging
-  - key: production
+- ingress:
+    domain: cjxd8.dgozalo.jxbdd.beescloud.com
+    externalDNS: true
+    ignoreLoadBalancer: true
+    namespaceSubDomain: -jx.
+    tls:
+      email: dgozalo@cloudbees.com
+      enabled: true
+      production: true
+  key: dev
+  repository: environment-cjxd8-manual-eks-test1-dev
+- ingress:
+    domain: ""
+    externalDNS: false
+    namespaceSubDomain: ""
+    tls:
+      email: ""
+      enabled: false
+      production: false
+  key: staging
+  repository: environment-cjxd8-manual-eks-test1-staging
+- ingress:
+    domain: ""
+    externalDNS: false
+    namespaceSubDomain: ""
+    tls:
+      email: ""
+      enabled: false
+      production: false
+  key: production
+  repository: environment-cjxd8-manual-eks-test1-production
+gitops: true
 ingress:
-  domain: ""
-  externalDNS: false
+  domain: cjxd8.dgozalo.jxbdd.beescloud.com
+  externalDNS: true
+  ignoreLoadBalancer: true
+  namespaceSubDomain: -jx.
   tls:
-    email: ""
-    enabled: false
-    production: false
+    email: dgozalo@cloudbees.com
+    enabled: true
+    production: true
 kaniko: true
+repository: nexus
 secretStorage: vault
 storage:
+  backup:
+    enabled: false
+    url: ""
   logs:
     enabled: true
-    url: ""
+    url: s3://cjxd8-manual-eks-test1-logs-d0299723-f92e-42bf-a135-a662c059c45
   reports:
     enabled: true
-    url: ""
+    url: s3://cjxd8-manual-eks-test1-reports-7fc83d3a-31ce-4d34-9c60-6365c845
   repository:
     enabled: true
-    url: ""
+    url: s3://cjxd8-manual-eks-test1-repository-311b6607-80f7-4eec-8c41-20f61
+vault:
+  aws:
+    autoCreate: true
+    iamUserName: jx-bdd-test
+  disableURLDiscovery: true
+velero:
+  schedule: ""
+  ttl: ""
 versionStream:
   ref: 2.0.1245+cjxd.8
   url: https://github.com/cloudbees/cloudbees-jenkins-x-versions.git
